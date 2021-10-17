@@ -1,0 +1,103 @@
+            bpy.ops.object.mode_set(mode='EDIT')
+            
+            thigh = deform+"thigh"+axis
+            shin = deform+"shin"+axis
+            foot = deform+"foot"+axis
+            toe = deform+"toe"+axis
+            
+            #eb_thigh = RBS.copy_bone_from_arma(s_arma,"thigh"+axis,arma,thigh)
+            #eb_thigh.parent = eb_pelvis
+            #eb_shin = RBS.copy_bone_from_arma(s_arma,"shin"+axis,arma,shin)
+            #eb_shin.parent = eb_thigh
+            #eb_foot = RBS.copy_bone_from_arma(s_arma,"foot"+axis,arma,foot)
+            #eb_foot.parent = eb_shin
+            #eb_toe = RBS.copy_bone_from_arma(s_arma,"toe"+axis,arma,toe)
+            #eb_toe.parent = eb_foot
+            
+            m = Rigbuddy_Mech.leg()             
+            m.arma = arma                
+            if(i==0):
+                m.bonelayer_control_legik = bonelayer_control_legik_left
+                m.bonelayer_control_legfk = bonelayer_control_legfk_left
+            else:
+                m.bonelayer_control_legik = bonelayer_control_legik_right
+                m.bonelayer_control_legfk = bonelayer_control_legfk_right
+            m.bonelayer_bone_basic = bonelayer_bone_basic
+            m.bonelayer_mech = bonelayer_mech
+            m.bonelayer_tweak = bonelayer_tweak
+            
+            m.bonegroup_control_basic_world1 = bonegroup_control_basic_world1
+            m.bonegroup_control_basic_world2 = bonegroup_control_basic_world2
+            m.bonegroup_control_basic_local1 = bonegroup_control_basic_local1
+            m.bonegroup_control_basic_local2 = bonegroup_control_basic_local2
+            
+            m.controlshape_foot_ik = Rigbuddy_Controlshape.data(controlshape_foot_ik,10.0,True,False)
+            m.controlshape_thigh_fk = Rigbuddy_Controlshape.data(controlshape_circle_solid_y,3.0,True,True)
+            m.controlshape_shin_fk = Rigbuddy_Controlshape.data(controlshape_circle_solid_y,2.0,True,True)
+            m.controlshape_foot_fk = Rigbuddy_Controlshape.data(controlshape_circle_solid_y,4.0,True,True)
+        
+                
+            m.rig_root = o_root 
+            m.leg_parent = o_pelvis
+            
+            active_arma = RBS.activate_arma(s_arma) 
+            m.ebd_thigh = RBS.editbone_data(active_arma.edit_bones["thigh"+axis])
+            m.ebd_shin = RBS.editbone_data(active_arma.edit_bones["shin"+axis])
+            m.ebd_foot = RBS.editbone_data(active_arma.edit_bones["foot"+axis])
+            m.ebd_toe = RBS.editbone_data(active_arma.edit_bones["toe"+axis])
+            
+            active_arma = RBS.activate_arma(arma) 
+
+            m.o_thigh = original+"thigh"+axis
+            m.o_shin = original+"shin"+axis
+            m.o_foot = original+"foot"+axis
+            m.o_toe = original+"toe"+axis
+            
+            m.d_thigh = deform+"thigh"+axis
+            m.d_shin = deform+"shin"+axis
+            m.d_foot = deform+"foot"+axis
+            m.d_toe = deform+"toe"+axis
+            m.thigh_parent = "thigh_parent"+axis
+            m.m_thigh_parent = mechanism+"thigh_parent_mech"+axis
+            m.m_thigh_parent_socket = mechanism+"thigh_parent_socket"+axis
+        
+
+                
+            
+            m.m_thigh_tweak = mechanism+"thigh_tweak"+axis
+            m.thigh_tweak = "thigh_tweak"+axis
+    
+            m.m_thigh_twist1_tweak = mechanism+"thigh_twist1"+axis
+            m.thigh_twist1_tweak = "thigh_twist1_tweak"+axis
+            
+            m.thigh_fk = control+"thigh_fk"+axis
+            m.shin_fk = control+"shin_fk"+axis
+            m.m_foot_fk = mechanism+"foot_fk"+axis
+            m.foot_fk = control+"foot_fk"+axis
+            m.toe_fk = control+"toe_fk"+axis         
+                        
+            m.thigh_ik = "thigh_ik"+axis
+            m.shin_ik = "shin_ik"+axis
+            m.thigh_stretch_ik = "thigh_stretch_ik"+axis
+            m.foot_ik = "foot_ik"+axis
+            
+            m.c_foot_ik = control+"foot_ik"+axis
+            m.c_heel_ik = control+"heel_ik"+axis
+            m.foot_parent_ik = "foot_parent_ik"+axis
+            
+            
+            m.t_foot = tweak+"foot"+axis
+            m.m_foot_roll = mechanism+"foot_roll"+axis
+            m.m_t_foot = mechanism+tweak+"foot"+axis
+            
+            
+            m.c_toe = control+"toe"+axis
+            m.foot_spin = mechanism+"foot_spin"+axis
+            m.m_heel_rock1 = mechanism+"heel_rock1"+axis
+            m.m_heel_rock2 = mechanism+"heel_rock2"+axis
+            m.m_heel_roll1 = mechanism+"heel_roll1"+axis
+            m.m_heel_roll2 = mechanism+"heel_roll2"+axis
+            
+            m.m_toe = mechanism+"toe"+axis
+            
+            m.go()

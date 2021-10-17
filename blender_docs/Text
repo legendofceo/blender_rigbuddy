@@ -1,0 +1,91 @@
+import bpy
+
+axis_suffix_x = ["_l","_r"]
+
+class rigbuddy_bone:
+
+    def __init__(self,id):
+        self.id = id
+
+    def get_parent_name_try_invert(self):
+        bpy.ops.object.mode_set(mode='EDIT')
+        return arma.edit_bones[self.id].parent    
+
+class rigbuddy_bone_symx(rigbuddy_bone):
+    
+    def sync_sym(self):
+        bpy.ops.object.mode_set(mode='EDIT')
+        main = arma.edit_bones[self.left]        
+        target = arma.edit_bones[self.right]  
+        target.head.x = (main.head.x*-1)
+        target.head.y = main.head.y
+        target.head.z = main.head.z
+        target.tail.x = (main.tail.x*-1)
+        target.tail.y = main.tail.y
+        target.tail.z = main.tail.z
+        target.roll = main.roll*-1
+        rbb = arma.get_bone(main.name)
+        
+        target.parent = arma.get_bone(main.name)
+        
+        #target.use_connect = main.use_connect
+        return self
+
+    def get_parent_name_try_invert(self):
+        bpy.ops.object.mode_set(mode='EDIT')
+        left_parent = arma.edit_bones[self.id].parent.name
+        right_parent = left_parent.replace("_l", "_r")
+        return right_parent
+    
+    def __init__(self,arma,id):
+        self.arma
+        self.id = id
+        self.left = self.id+axis_suffix_x[0]
+        self.right = self.id+axis_suffix_x[1]
+        
+        
+class rigbuddy_skeleton:
+            
+    def __init__(self, name):
+        self.name = name
+
+class rigbuddy_biped_skeleton(rigbuddy_skeleton):
+        
+    def add_bone(self,bone):
+        self.bones_dict[bone.id] = bone
+        self.bones.append(bone)
+        return bone
+    
+    def build(self):        
+        self.add_bone(rigbuddy_bone_symx("thigh"))
+        self.add_bone(rigbuddy_bone_symx("shin"))
+        self.add_bone(rigbuddy_bone_symx("foot"))
+        self.add_bone(rigbuddy_bone_symx("toe"))
+        return self
+    
+    
+    def process(self):
+        for b in self.bones:
+            b.sync_sym()
+        return self
+     
+    def get_bone(id):
+        return self.bones_dict[id]
+           
+    def __init__(self, name, arma):
+        self.name = name
+        self.bones_dict = {}
+        self.bones = []    
+                   
+selected_object = bpy.context.view_layer.objects.active
+arma = selected_object.data
+skeleton = rigbuddy_biped_skeleton("biped_female",arma).build().process()
+
+
+
+thigh = arma.edit_bones['thigh_l']
+print(thigh.head.x)
+
+#for i,CurrentBONE in enumerate(Armatura.bones):
+#        print(CurrentBONE)
+        
